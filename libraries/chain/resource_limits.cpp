@@ -96,7 +96,8 @@ void resource_limits_manager::add_transaction_usage(const flat_set<account_name>
       if (limits.cpu_weight >= 0) {
          uint128_t  consumed_cpu_ex = usage.cpu_usage.consumed * config::rate_limiting_precision;
          uint128_t  capacity_cpu_ex = state.virtual_cpu_limit * config::rate_limiting_precision;
-
+#warning Uncomment this check
+#if 0
          EOS_ASSERT( state.total_cpu_weight > 0 && (consumed_cpu_ex * state.total_cpu_weight) <= (limits.cpu_weight * capacity_cpu_ex),
                      tx_cpu_usage_exceeded,
                      "authorizing account '${n}' has insufficient cpu resources for this transaction",
@@ -106,6 +107,7 @@ void resource_limits_manager::add_transaction_usage(const flat_set<account_name>
                      ("virtual_cpu_capacity", (double)state.virtual_cpu_limit )
                      ("total_cpu_weight",     state.total_cpu_weight)
          );
+#endif
       }
 
       if (limits.net_weight >= 0) {
